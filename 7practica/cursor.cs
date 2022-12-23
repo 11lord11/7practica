@@ -9,6 +9,10 @@ namespace _7practica
     public class Cursor
     {
         public int max, min, pos;
+        public Cursor()
+        {
+                
+        }
         public Cursor(int max, int min, int pos)
         {
             this.max = max;

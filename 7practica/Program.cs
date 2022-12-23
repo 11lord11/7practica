@@ -1,28 +1,36 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
-namespace _7word
+namespace _7practica
 {
-    internal class Program
+    class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            string folder = null;
-            while (true)
+            string currentFolderPath = null;
+
+            do
             {
-                List<ReadedFile> list = Folder.Read(folder);
-                int pos = Menu.Start(list,folder);
-                if (pos == -1)
-                    break;
-                else
-                    pos--;
-                if (File.Exists(list[pos].path))
+                List<ReadedFile> fileSystemEntries = Folder.GetDrivesOrFiles(currentFolderPath);
+                int cursorPosition = Menu.Start(fileSystemEntries, currentFolderPath);
+
+                if (cursorPosition == -1)
                 {
-                    Process.Start(list[pos].path);
                     break;
                 }
-                else
-                    folder = list[pos].path;
-            }
+
+                cursorPosition--;
+                string selectedPath = fileSystemEntries[cursorPosition].path;
+
+                if (File.Exists(selectedPath))
+                {
+                    Process.Start(selectedPath);
+                    break;
+                }
+
+                currentFolderPath = selectedPath;
+            } while (true);
         }
     }
 }

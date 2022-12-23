@@ -24,17 +24,25 @@ namespace _7practica
                         Console.SetCursorPosition(0, cursor.pos);
                         Console.Write("  ");
                         if (cursor.pos == cursor.min)
+                        {
                             cursor.pos = cursor.max;
+                        }
                         else
+                        {
                             cursor.pos--;
+                        }
                         break;
                     case ConsoleKey.DownArrow:
                         Console.SetCursorPosition(0, cursor.pos);
                         Console.Write("  ");
                         if (cursor.pos == cursor.max)
+                        {
                             cursor.pos = cursor.min;
+                        }
                         else
+                        {
                             cursor.pos++;
+                        }
                         break;
                     case ConsoleKey.Escape:
                         return -1;

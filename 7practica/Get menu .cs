@@ -13,7 +13,7 @@ namespace _7practica
             List<string> strings = new List<string>();
             foreach (ReadedFile file in files)
             {
-                if (!file.file)
+                if (file.file == false )
                 {
                     strings.Add(file.name + '\\');
                 }

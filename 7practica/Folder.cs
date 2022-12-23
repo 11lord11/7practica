@@ -1,44 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace _7practica 
+namespace _7practica
 {
-   
-   
-   
-   
-  
-    public class Folder
+    class Folder
     {
-        public static List<ReadedFile> Read(string path)
+        public static List<ReadedFile> GetDrivesOrFiles(string path)
         {
-            List<ReadedFile> files = new List<ReadedFile>();
-            if (path == null)
+            var drivesOrFiles = new List<ReadedFile>();
+
+            if (path != null)
             {
-                files.AddRange(GetDrives());
+                drivesOrFiles.AddRange(GetFiles(path));
             }
-            else {
-                
-                files.AddRange(GetFiles(path));
+            else
+            {
+                drivesOrFiles.AddRange(GetDrives());
             }
-            return files;
+
+            return drivesOrFiles;
         }
-        private static List<ReadedFile> GetFiles(string path)
+
+        static List<ReadedFile> GetFiles(string path)
         {
-            List<ReadedFile> files = new List<ReadedFile>();
-            files.AddRange(ToReadedFile.ReadedFiles(Directory.GetDirectories(path).ToList()));
-            files.AddRange(ToReadedFile.ReadedFiles(Directory.GetFiles(path).ToList()));
-            return files;
+            var dirsAndFiles = new List<ReadedFile>();
+            var dirs = ToReadedFile.ReadedFiles(Directory.GetDirectories(path).ToList());
+            var files = ToReadedFile.ReadedFiles(Directory.GetFiles(path).ToList());
+
+            dirsAndFiles.AddRange(dirs);
+            dirsAndFiles.AddRange(files);
+
+            return dirsAndFiles;
         }
-        private static List<ReadedFile> GetDrives()
+
+        static List<ReadedFile> GetDrives()
         {
-            List<ReadedFile> drives = new List<ReadedFile>();
-            foreach (DriveInfo drive in  DriveInfo.GetDrives())
-                drives.Add(new ReadedFile($"{drive.Name} Свободно {Math.Round(Convert.ToDouble(drive.AvailableFreeSpace) / 1024 / 1024 / 1024, 2)} гб", drive.Name, false));
+            var drives = new List<ReadedFile>();
+
+            foreach (var drive in DriveInfo.GetDrives())
+            {
+                var freeGigabytes = KilobytesToBytes(drive.AvailableFreeSpace);
+                var freeSpace = $"{drive.Name} Свободно {freeGigabytes} гб";
+                drives.Add(new ReadedFile(freeSpace, drive.Name, false));
+            }
+
             return drives;
+        }
+
+        static double KilobytesToBytes(long kilobytes)
+        {
+            return Math.Round(kilobytes / 1024f / 1024 / 1024, 2);
         }
     }
 }

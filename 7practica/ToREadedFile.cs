@@ -10,7 +10,7 @@ namespace _7practica
     {
         private static string GetName(string path)
         {
-            return path.Split('\\')[^1];
+            return path.Split('\\')[path.Split("\\").Length -1];
         }
         public static List<ReadedFile> ReadedFiles(List<string> files)
         {

@@ -11,6 +11,10 @@ namespace _7practica
         public string name;
         public string path;
         public bool file;
+        public ReadedFile()
+        {
+                
+        }
         public ReadedFile(string name, string path, bool file)
         {
             this.name = name;
